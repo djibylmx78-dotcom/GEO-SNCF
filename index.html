@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Géographie ferroviaire de France</title>
+<style>
+:root{--bg:#eef1f7;--fg:#14213d;--mut:#5b6784;--card:#fff;--land:#f4eed6;--line:#c9bd88;--sea:#d9e8f6;--acc:#1d4ed8;--acc2:#0b1f4b;--ok:#15803d;--bad:#dc2626;--bd:#dce2ee;--sh:0 6px 20px rgba(20,33,61,.08);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1120;--fg:#e7ecf6;--mut:#94a1bf;--card:#131c30;--land:#3f3c27;--line:#6d6839;--sea:#0e192b;--acc:#7aa7ff;--acc2:#0f2a66;--ok:#4ade80;--bad:#ff7b7b;--bd:#223049;--sh:0 6px 20px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#0a1120;--fg:#e7ecf6;--mut:#94a1bf;--card:#131c30;--land:#3f3c27;--line:#6d6839;--sea:#0e192b;--acc:#7aa7ff;--acc2:#0f2a66;--ok:#4ade80;--bad:#ff7b7b;--bd:#223049;--sh:0 6px 20px rgba(0,0,0,.35)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+.hero{background:linear-gradient(135deg,var(--acc2),#1d4ed8);color:#fff;padding:18px 16px 54px}
+.hero div{max-width:760px;margin:0 auto}
+.hero h1{margin:0;font-size:1.35rem;letter-spacing:-.01em}
+.hero p{margin:4px 0 0;opacity:.8;font-size:.9rem}
+main{max-width:760px;margin:-40px auto 0;padding:0 12px 28px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;box-shadow:var(--sh);padding:12px 14px;margin-bottom:10px}
+.st{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700}
+.pill{font-size:.82rem;font-weight:600;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.pbar{height:8px;border-radius:99px;background:var(--bd);margin-top:8px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--acc),var(--ok));transition:width .35s ease}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--bg);padding:4px;border-radius:14px;margin-bottom:10px}
+.seg button{border:0;background:transparent;padding:10px 6px;border-radius:11px;font-weight:600;color:var(--mut)}
+.seg button.on{background:var(--card);color:var(--acc);box-shadow:0 2px 8px rgba(20,33,61,.12)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;border-radius:99px;padding:7px 14px;font-size:.9rem;background:var(--bg);color:var(--mut);border:1px solid var(--bd)}
+.chips button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.ask{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;text-align:center;border-top:3px solid var(--acc)}
+.ask small,#selT{display:block;color:var(--mut);font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.ask b{display:block;font-size:1.75rem;line-height:1.2;margin-top:2px;letter-spacing:-.01em}
+#fb,#fbP{min-height:1.3em;margin-top:6px;font-weight:600}
+.ok{color:var(--ok)}.ko{color:var(--bad)}
+.row{display:flex;gap:8px;margin-top:10px}
+.row input{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--bd);background:var(--bg);color:var(--fg);outline:none}
+.row input:focus{border-color:var(--acc)}
+.row2{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.sug{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px}
+.sug button{padding:8px 14px;font-size:.95rem;border-radius:99px;background:color-mix(in srgb,var(--acc) 12%,transparent);color:var(--acc);border-color:transparent;font-weight:600}
+button,select{font:inherit;padding:10px 16px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--fg);cursor:pointer;transition:transform .08s,opacity .15s}
+button:active{transform:scale(.97)}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc);font-weight:600}
+button:disabled{opacity:.4;cursor:default}
+.lg{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0 10px}
+.lg label{display:flex;align-items:center;gap:6px;font-size:.85rem;padding:6px 11px;border-radius:99px;background:var(--card);border:1px solid var(--bd)}
+.lg input{accent-color:var(--acc);margin:0}
+.lg i{display:inline-block;width:20px;border-top:3px solid}
+.wrap{overflow:auto;max-height:68vh;border-radius:18px;border:1px solid var(--bd);box-shadow:var(--sh);background:var(--sea)}
+svg{width:100%;height:auto;display:block;background:radial-gradient(120% 90% at 30% 15%,color-mix(in srgb,var(--sea) 70%,#fff),var(--sea));cursor:crosshair;touch-action:manipulation}
+.land0{fill:var(--line);stroke:var(--line);stroke-width:13;stroke-linejoin:round}
+.land{fill:var(--land);stroke:var(--land);stroke-width:11;stroke-linejoin:round}
+.ln{fill:none;stroke-linejoin:round;stroke-linecap:round;pointer-events:none}
+.ln.T{stroke:var(--mut);stroke-width:1;opacity:.7}.ln.I{stroke:var(--acc);stroke-width:1.8;opacity:.85}.ln.L{stroke:var(--fg);stroke-width:3}
+.noL .L,.noI .I,.noT .T{display:none}
+.lbl{font-size:9.5px;font-weight:600;fill:var(--fg);paint-order:stroke;stroke:var(--land);stroke-width:3px;stroke-linejoin:round}
+#dots circle{filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.35))}
+.btns{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+.res{animation:in .35s ease}
+.res ul{list-style:none;margin:8px 0;padding:0;max-height:300px;overflow-y:auto}
+.res li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd)}
+.res button{margin-top:6px}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hint{color:var(--mut);font-size:.82rem;text-align:center;margin-top:6px}
+</style>
+</head>
+<body>
+<header class="hero"><div><h1>🚄 Géographie ferroviaire de France</h1><p>Place ou nomme les villes et gares de la carte</p></div></header>
+<main>
+<section class="card"><div class="st"><span id="prog"></span><span id="score" class="pill"></span></div><div class="pbar"><i id="pfill"></i></div></section>
+<select id="mode"><option value="placer">Placer la ville</option><option value="nommer">Nommer le point</option></select>
+<select id="reg"><option value="all">France entière</option><option value="nord">Nord</option><option value="sud">Sud</option><option value="est">Est</option><option value="ouest">Ouest</option><option value="centre">Centre</option></select>
+<div class="ask card" id="pP">
+ <small>Touchez le point rouge de cette ville</small><b id="city">…</b><div id="fbP"></div>
+ <div class="row2"><button class="p" id="next" disabled>Suivante</button><button id="skip">Passer</button></div>
+</div>
+<div class="ask card" id="pN" hidden>
+ <div id="selT">Touchez un point rouge</div>
+ <div class="row"><input id="inp" type="text" placeholder="Tape les premières lettres…" autocomplete="off" autocapitalize="words" autocorrect="off" spellcheck="false" disabled><button class="p" id="okb" disabled>Valider</button></div>
+ <div class="sug" id="sug"></div>
+ <div id="fb"></div>
+ <div class="row2"><button id="hint" disabled>Indice</button><button id="rev" disabled>Voir la réponse</button></div>
+</div>
+<div class="lg"><label><input type="checkbox" id="kL" checked><i style="border-color:var(--fg);border-top-width:4px"></i>TGV (LGV)</label><label><input type="checkbox" id="kI" checked><i style="border-color:var(--acc)"></i>Intercités</label><label><input type="checkbox" id="kT" checked><i style="border-color:var(--mut);border-top-width:1px"></i>TER</label><label><input type="checkbox" id="kN" checked>Noms affichés</label></div>
+<div class="wrap"><svg id="map" viewBox="0 0 620 610" role="img" aria-label="Carte de France">
+ <path id="fr0" class="land0"/>
+ <path id="fr" class="land"/>
+ <g id="lines"></g>
+ <g id="dots"></g>
+ <g id="mk"></g>
+ <g id="lbls"></g>
+</svg></div>
+<div class="btns"><button id="zm">🔍 Zoom ×1</button><button id="restart">↺ Recommencer</button></div>
+<div class="hint">Astuce : zoome ×2 ou ×3 pour viser les zones denses (Paris, Nord, Côte d’Azur).</div>
+<div id="end"></div>
+</main>
+<script>
+
+
+const D="Dunkerque,51.03,2.38;Calais,50.95,1.85;Boulogne,50.73,1.61;Lille,50.63,3.07;Tourcoing,50.72,3.16;Roubaix,50.69,3.17;Valenciennes,50.36,3.52;Quévy-Frontière,50.32,3.95;Jeumont,50.30,4.10;Maubeuge,50.28,3.97;Béthune,50.53,2.64;Lens,50.43,2.83;Douai,50.37,3.08;Arras,50.29,2.78;Aulnoye-Aymeries,50.20,3.84;Amiens,49.89,2.30;St-Quentin,49.85,3.29;TGV Haute-Picardie,49.87,2.83;Compiègne,49.42,2.83;Laon,49.56,3.62;Creil,49.26,2.48;Aéroport CDG TGV,49.00,2.57;Reims,49.26,4.03;Charleville-Mézières,49.77,4.72;Longwy,49.52,5.76;Thionville,49.36,6.17;Metz,49.11,6.18;Forbach,49.19,6.90;Sarrebourg,48.73,7.05;Lorraine TGV,48.95,6.17;Meuse TGV,48.97,5.27;Verdun,49.16,5.38;Vitry-le-François,48.72,4.58;Épernay,49.04,3.96;Châlons-en-Champagne,48.96,4.36;Marne-la-Vallée,48.85,2.78;St-Dizier,48.64,4.95;Bar-le-Duc,48.77,5.16;Toul,48.68,5.89;Nancy,48.69,6.18;Lunéville,48.59,6.50;St-Dié,48.29,6.95;Strasbourg,48.58,7.75;Colmar,48.08,7.36;Épinal,48.18,6.45;Mulhouse,47.74,7.34;Belfort,47.64,6.86;Montbéliard,47.51,6.80;Besançon,47.24,6.02;Mouchard,46.97,5.79;Dole,47.09,5.49;Dijon,47.32,5.03;Chagny,46.91,4.75;Chalon-sur-Saône,46.78,4.85;Mâcon,46.31,4.83;Bourg-en-Bresse,46.20,5.22;Culoz,45.85,5.78;Montceau-les-Mines,46.67,4.37;Troyes,48.30,4.08;Chaumont,48.11,5.14;Culmont-Chalindrey,47.85,5.43;Massy TGV,48.73,2.26;Paris,48.86,2.35;Versailles-Chantiers,48.80,2.13;Chartres,48.45,1.49;Surdon,48.78,0.12;Argentan,48.75,-0.02;Alençon,48.43,0.09;Caen,49.18,-0.37;Lisieux,49.15,0.23;Rouen,49.44,1.10;Dieppe,49.92,1.08;Le Havre,49.49,0.11;Trouville-Deauville,49.37,0.09;Dives-Cabourg,49.29,-0.10;Cherbourg,49.64,-1.62;Granville,48.84,-1.60;St-Malo,48.65,-2.01;St-Brieuc,48.51,-2.76;Morlaix,48.58,-3.83;Brest,48.39,-4.49;Quimper,47.99,-4.10;Lorient,47.75,-3.37;Dol-de-Bretagne,48.55,-1.75;Rennes,48.10,-1.67;Laval,48.07,-0.77;Le Mans,48.00,0.20;Angers,47.47,-0.56;Le Croisic,47.29,-2.51;St-Nazaire,47.28,-2.21;Nantes,47.22,-1.55;La Roche-sur-Yon,46.67,-1.43;Niort,46.32,-0.46;La Rochelle,46.16,-1.15;Saintes,45.75,-0.63;Angoulême,45.65,0.16;Bordeaux,44.84,-0.58;Arcachon,44.66,-1.17;Dax,43.71,-1.05;Bayonne,43.49,-1.47;Hendaye,43.36,-1.77;Pau,43.30,-0.37;Lourdes,43.09,-0.05;Tarbes,43.23,0.07;Toulouse,43.60,1.45;Montauban,44.02,1.35;Agen,44.20,0.62;Cahors,44.45,1.44;Périgueux,45.18,0.72;Brive-la-Gaillarde,45.16,1.53;Limoges,45.83,1.26;Poitiers,46.58,0.34;Châteauroux,46.81,1.69;Tours,47.39,0.69;Blois,47.59,1.34;Les Aubrais (Orléans),47.93,1.90;Vierzon,47.22,2.07;Bourges,47.08,2.39;Nevers,46.99,3.16;Moulins,46.57,3.33;Montluçon,46.34,2.60;St-Germain-des-Fossés,46.20,3.43;Paray-le-Monial,46.45,4.27;Guéret,46.17,1.87;Gannat,46.10,3.20;Clermont-Ferrand,45.78,3.08;Ussel,45.55,2.31;Tulle,45.27,1.77;Le Puy-en-Velay,45.04,3.89;Aurillac,44.93,2.44;Figeac,44.61,2.03;Rodez,44.35,2.57;Millau,44.10,3.08;Roanne,46.04,4.07;Lyon,45.76,4.84;St-Étienne,45.44,4.39;Vienne,45.52,4.87;Valence,44.93,4.89;Grenoble,45.19,5.71;Chambéry,45.57,5.92;Aix-les-Bains,45.69,5.91;Annecy,45.90,6.12;St-Gervais-les-Bains,45.90,6.71;Bourg-St-Maurice,45.62,6.77;Modane,45.20,6.66;Briançon,44.90,6.64;Gap,44.56,6.08;Veynes-Dévoluy,44.53,5.82;Genève,46.20,6.14;Évian,46.40,6.59;Bellegarde,46.11,5.82;Bâle,47.56,7.59;Avignon,43.95,4.81;Nîmes,43.83,4.36;Alès,44.13,4.08;Montpellier,43.61,3.88;Sète,43.40,3.70;Béziers,43.34,3.22;Narbonne,43.18,3.00;Carcassonne,43.21,2.35;Perpignan,42.70,2.90;Cerbère,42.44,3.17;Marseille,43.30,5.38;Aix-en-Provence,43.53,5.45;Toulon,43.13,5.93;Nice,43.70,7.26;Cannes,43.55,7.02;Vintimille,43.79,7.61;Champagne-Ardenne TGV,49.21,4.00;Mâcon TGV,46.28,4.78;Futuroscope,46.67,0.37;St-Pierre-des-Corps,47.39,0.73;Saincaize,46.97,3.07;Vichy,46.12,3.43;St-Chamond,45.47,4.51;Moirans,45.31,5.58;Valence TGV,44.99,4.97;Avignon TGV,43.92,4.79;Aix-en-Provence TGV,43.45,5.32;Facture,44.64,-0.97";
+function REG(la,lo){return la>=50.1||(la>=49&&lo<3.9)?"nord":(lo>=3.9&&la>=47.9)||(lo>=4.6&&la>=45.5)||(lo>=5.5&&la>=44.8)?"est":lo<0.5?"ouest":la<45.3?"sud":"centre"}
+const CITIES=D.split(";").map(s=>{const a=s.split(",");return{n:a[0],la:+a[1],lo:+a[2],r:REG(+a[1],+a[2])}});
+const OUT=[[2.55,51.05],[1.6,50.9],[1.55,50.4],[1.5,50.1],[1.1,49.9],[0.1,49.5],[-0.2,49.35],[-1.2,49.4],[-1.3,49.7],[-1.85,49.7],[-1.6,48.8],[-1.9,48.65],[-3.0,48.8],[-3.6,48.75],[-4.5,48.7],[-4.8,48.5],[-4.5,48.3],[-4.7,48.0],[-4.3,47.8],[-3.4,47.7],[-2.7,47.5],[-2.5,47.3],[-2.2,47.2],[-2.2,47.0],[-1.9,46.8],[-1.2,46.4],[-1.15,46.15],[-1.2,45.9],[-1.05,45.5],[-1.2,44.7],[-1.25,44.0],[-1.55,43.5],[-1.8,43.38],[-0.7,43.0],[0.7,42.8],[1.4,42.7],[1.75,42.45],[2.0,42.35],[3.15,42.43],[3.05,42.9],[3.1,43.3],[3.5,43.4],[4.1,43.5],[4.6,43.4],[5.0,43.4],[5.35,43.3],[6.0,43.1],[6.7,43.15],[7.2,43.65],[7.5,43.78],[7.0,44.2],[6.65,44.5],[7.05,44.7],[6.9,45.1],[7.1,45.5],[6.8,45.9],[6.8,46.4],[6.1,46.15],[6.2,46.4],[6.9,47.0],[7.0,47.35],[7.55,47.6],[7.6,48.0],[8.2,48.98],[7.0,49.15],[6.4,49.45],[5.9,49.5],[5.5,49.5],[4.85,50.1],[4.6,49.98],[4.2,50.0],[4.25,50.3],[3.75,50.35],[3.5,50.55],[3.1,50.75],[2.6,51.05]];
+const X=lo=>(lo+5.3)*41.3, Y=la=>(51.3-la)*60;
+(function(){const P=CITIES.map(c=>({c,x:X(c.lo),y:Y(c.la)}));P.forEach(p=>{p.x0=p.x;p.y0=p.y});
+for(let k=0;k<120;k++)for(let a=0;a<P.length;a++)for(let b=a+1;b<P.length;b++){const A=P[a],B=P[b];let dx=B.x-A.x,dy=B.y-A.y,d=Math.hypot(dx,dy);if(d<9){if(d<.01){dx=a%2?1:-1;dy=.5;d=1.1}const f=(9-d)/2/d*.6;A.x-=dx*f;A.y-=dy*f;B.x+=dx*f;B.y+=dy*f}}
+P.forEach(p=>{const m=Math.hypot(p.x-p.x0,p.y-p.y0);if(m>9){p.x=p.x0+(p.x-p.x0)*9/m;p.y=p.y0+(p.y-p.y0)*9/m}p.c.lo=p.x/41.3-5.3;p.c.la=51.3-p.y/60})})();
+const svg=document.getElementById("map"), mk=document.getElementById("mk");
+["fr","fr0"].forEach(id=>document.getElementById(id).setAttribute("d","M"+OUT.map(p=>X(p[0]).toFixed(1)+" "+Y(p[1]).toFixed(1)).join("L")+"Z"));
+function km(a,b,c,d){const r=Math.PI/180,h=Math.sin((c-a)*r/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin((d-b)*r/2)**2;return 12742*Math.asin(Math.sqrt(h))}
+const $=id=>document.getElementById(id);
+const LN="L:Paris|Aéroport CDG TGV|TGV Haute-Picardie|Arras|Lille|Calais;L:Paris|Marne-la-Vallée|Champagne-Ardenne TGV|Meuse TGV|Lorraine TGV|Sarrebourg|Strasbourg;L:Paris|Massy TGV|47.80,1.07|St-Pierre-des-Corps|Futuroscope|Angoulême|Bordeaux;L:Massy TGV|48.15,1.00|Le Mans|Laval|Rennes;L:Paris|47.62,4.34|Mâcon TGV|Lyon|Valence TGV|Avignon TGV|Aix-en-Provence TGV|Marseille;L:Avignon TGV|Nîmes|Montpellier;L:Dijon|Dole|Besançon|Montbéliard|Mulhouse;"+
+"I:Paris|Nevers|Moulins|St-Germain-des-Fossés|Clermont-Ferrand;I:Paris|Les Aubrais (Orléans)|Vierzon|Châteauroux|Limoges|Brive-la-Gaillarde|Cahors|Montauban|Toulouse;I:Paris|Troyes|Chaumont|Culmont-Chalindrey|47.62,6.15|Belfort|Mulhouse;I:Paris|49.02,1.15|Lisieux|Caen|Cherbourg;I:Paris|Rouen|Le Havre;I:Paris|Creil|Amiens|Boulogne|Calais;I:Bordeaux|Agen|Montauban|Toulouse|Carcassonne|Narbonne|Béziers|Montpellier|Nîmes|Avignon|Marseille;I:Nantes|La Roche-sur-Yon|La Rochelle|Saintes|Bordeaux;I:Nantes|Angers|Tours|Vierzon|Bourges|Nevers|Moulins|Roanne|Lyon;I:Toulouse|Tarbes|Lourdes|Pau|Dax|Bayonne|Hendaye;I:Paris|Surdon|Argentan|Granville;"+
+"T:Rennes|St-Brieuc|Morlaix|Brest;T:Rennes|Dol-de-Bretagne|St-Malo;T:Rennes|47.66,-2.76|Lorient|Quimper|Brest;T:Nantes|St-Nazaire|Le Croisic;T:Le Mans|Alençon;T:Le Mans|Angers;T:Le Mans|Tours;T:Le Mans|Chartres|Paris;T:Rouen|Lisieux;T:Rouen|Dieppe;T:Rouen|Amiens;T:Caen|Dives-Cabourg;T:Lisieux|Trouville-Deauville;T:Lille|Dunkerque;T:Lille|Lens|Arras;T:Lille|Béthune|Lens;T:Lille|Roubaix|Tourcoing;T:Lille|Douai|Valenciennes|Maubeuge|Jeumont;T:Valenciennes|Quévy-Frontière;T:Amiens|St-Quentin|Aulnoye-Aymeries|Maubeuge;T:Paris|Épernay|Châlons-en-Champagne|Vitry-le-François|St-Dizier|Bar-le-Duc|Toul|Nancy;T:Reims|Charleville-Mézières;T:Reims|Laon;T:Reims|Épernay;T:Nancy|Metz|Thionville|Longwy;T:Metz|Forbach;T:Nancy|Lunéville|Sarrebourg|Strasbourg;T:Nancy|Épinal;T:Strasbourg|Colmar|Mulhouse|Bâle;T:Dole|Mouchard;T:Dijon|Chagny|Chalon-sur-Saône|Mâcon|Lyon;T:Chagny|Montceau-les-Mines|Paray-le-Monial|Roanne;T:Mâcon|Bourg-en-Bresse|Culoz|Chambéry|Modane;T:Culoz|Bellegarde|Genève|Évian;T:Culoz|Aix-les-Bains|Annecy|St-Gervais-les-Bains;T:Chambéry|45.67,6.39|Bourg-St-Maurice;T:Chambéry|Grenoble|Veynes-Dévoluy|Gap|Briançon;T:Lyon|Grenoble;T:Lyon|Vienne|Valence;T:Valence|Grenoble;T:Lyon|St-Étienne|Le Puy-en-Velay;T:Lyon|Roanne;"+
+"T:Clermont-Ferrand|Ussel|Tulle|Brive-la-Gaillarde;T:Clermont-Ferrand|Aurillac;T:Brive-la-Gaillarde|Figeac|Rodez|Toulouse;T:Béziers|Millau|45.12,2.98|Clermont-Ferrand;T:Nîmes|Alès;T:Montpellier|Sète|Béziers;T:Narbonne|Perpignan|Cerbère;T:Bordeaux|Arcachon;T:Bordeaux|Périgueux|Limoges;T:Périgueux|Brive-la-Gaillarde;T:Poitiers|Limoges;T:Poitiers|Niort|La Rochelle;T:Angoulême|Limoges;T:Angoulême|Saintes;T:Bourges|Montluçon|Guéret;T:Châteauroux|Montluçon;T:Les Aubrais (Orléans)|Blois|Tours";
+const M={},LG=$("lines");CITIES.forEach(c=>M[c.n]=c);
+LN.split(";").forEach(l=>{const pts=l.slice(2).split("|").map(n=>{const m=n.match(/^(-?[\d.]+),(-?[\d.]+)$/);if(m)return[+m[1],+m[2]];const c=M[n];if(!c)console.warn(n);return c&&[c.la,c.lo]}).filter(Boolean);
+ const e=document.createElementNS("http://www.w3.org/2000/svg","polyline");e.setAttribute("points",pts.map(p=>X(p[1]).toFixed(1)+","+Y(p[0]).toFixed(1)).join(" "));e.setAttribute("class","ln "+l[0]);LG.appendChild(e)});
+["L","I","T"].forEach(k=>$("k"+k).onchange=e=>LG.classList.toggle("no"+k,!e.target.checked));
+const NS="http://www.w3.org/2000/svg";
+const AL={"Aéroport CDG TGV":["CDG","Roissy","Aéroport CDG","Charles de Gaulle"],"Bâle":["Basel"],"Aix-en-Provence":["Aix"],"Les Aubrais (Orléans)":["Aubrais","Orléans"],"TGV Haute-Picardie":["Haute Picardie"],"Marne-la-Vallée":["Chessy"],"Boulogne":["Boulogne-sur-Mer"],"Dol-de-Bretagne":["Dol"],"Veynes-Dévoluy":["Veynes"],"Culmont-Chalindrey":["Culmont","Chalindrey"],"Quévy-Frontière":["Quévy"],"Brive-la-Gaillarde":["Brive"],"Vitry-le-François":["Vitry"],"Aulnoye-Aymeries":["Aulnoye"],"Châlons-en-Champagne":["Châlons"],"Paray-le-Monial":["Paray"],"Chalon-sur-Saône":["Chalon"],"Montceau-les-Mines":["Montceau"],"Trouville-Deauville":["Trouville","Deauville"],"Dives-Cabourg":["Dives","Cabourg"],"Charleville-Mézières":["Charleville"],"Versailles-Chantiers":["Versailles"],"St-Gervais-les-Bains":["St-Gervais"]};
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/œ/g,"oe").replace(/[^a-z0-9]+/g," ").replace(/\bsaint\b/g,"st").replace(/\bsainte\b/g,"ste").replace(/ /g,"")}
+function lev(a,b){const m=a.length,n=b.length;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const q=[i];for(let j=1;j<=n;j++)q[j]=Math.min(p[j]+1,q[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=q}return p[n]}
+function vars(n){const v=[n],p=n.match(/^(.*?)\s*\((.*)\)$/);if(p)v.push(p[1],p[2]);const t=n.replace(/\bTGV\b/,"").replace(/\s+/g," ").trim();if(t!==n&&!CITIES.some(c=>c.n===t))v.push(t);return v.concat(AL[n]||[])}
+const tol=n=>n<5?0:n<9?1:n<13?2:3;
+function check(inp,c){const a=norm(inp);if(!a)return null;let best=99;for(const v of vars(c.n)){const b=norm(v),d=lev(a,b);if(d<=tol(b.length)&&d<best)best=d}return best<99?{exact:best===0}:null}
+function sugg(txt){const a=norm(txt);if(!a)return[];const P=[],W=[];for(const c of POOL){const vs=vars(c.n);if(vs.some(v=>norm(v).startsWith(a)))P.push(c.n);else if(a.length>=2&&vs.some(v=>v.split(/[\s-]+/).some(w=>norm(w).startsWith(a))))W.push(c.n)}
+ const s=n=>n.localeCompare(n);return P.sort((x,y)=>x.localeCompare(y,"fr")).concat(W.sort((x,y)=>x.localeCompare(y,"fr"))).slice(0,6)}
+
+let MODE="placer",POOL=CITIES,total=0,sel=null,nf=0,nr=0,ne=0,queue=[],qi=0,pok=0,pres=[],pdone=false,ptotal=0;
+const ST={},ERR={},DOT={},dg=$("dots"),lb=$("lbls");
+CITIES.forEach(q=>{const e=document.createElementNS(NS,"circle");e.setAttribute("cx",X(q.lo));e.setAttribute("cy",Y(q.la));e.setAttribute("stroke","#fff");dg.appendChild(e);DOT[q.n]=e});
+function paint(c){const e=DOT[c.n],s=ST[c.n],on=sel===c;if(!POOL.includes(c)){e.setAttribute("fill","#9aa0a6");e.setAttribute("r",2.2);e.setAttribute("opacity",.55);e.setAttribute("stroke-width","0.8");return}
+ e.setAttribute("opacity",1);e.setAttribute("fill",MODE=="nommer"?(s=="found"?"#1a8f4a":s=="rev"?"#e08a1e":on?"#1f5fbf":"#d93a3a"):"#d93a3a");e.setAttribute("r",on?5.5:3.4);e.setAttribute("stroke-width",on?"2":"0.8")}
+function label(c){const t=document.createElementNS(NS,"text");t.setAttribute("x",X(c.lo)+6);t.setAttribute("y",Y(c.la)-5);t.setAttribute("class","lbl");t.textContent=c.n;lb.appendChild(t)}
+const fbN=(t,k)=>{$("fb").className=k||"";$("fb").textContent=t},fbP=(t,k)=>{$("fbP").className=k||"";$("fbP").textContent=t};
+function upd(){let f;if(MODE=="placer"){f=ptotal?pok/ptotal:0;$("prog").textContent="Validées : "+pok+" / "+ptotal;$("score").textContent="Erreurs : "+pres.filter(r=>!r.good).length}else{f=total?(nf+nr)/total:0;$("prog").textContent="Trouvées : "+nf+" / "+total;$("score").textContent="Erreurs : "+ne}$("pfill").style.width=Math.round(100*f)+"%"}
+/* ---- Jeu 1 : je place la ville ---- */
+function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
+function pStart(list){queue=shuffle(list);ptotal=list.length;qi=0;pok=0;pres=[];$("end").innerHTML="";pShow()}
+function requeue(c){const rem=queue.length-qi-1,lo=rem>=3?qi+3:qi+1,pos=lo+Math.floor(Math.random()*(queue.length-lo+1));queue.splice(pos,0,c)}
+function pShow(){mk.innerHTML="";pdone=false;fbP("");$("next").disabled=true;$("next").textContent="Suivante";$("skip").disabled=false;if(qi>=queue.length)return pFinish();$("city").textContent=queue[qi].n;upd()}
+function dotM(x,y,col,r){const e=document.createElementNS(NS,"circle");e.setAttribute("cx",x);e.setAttribute("cy",y);e.setAttribute("r",r);e.setAttribute("fill",col);e.setAttribute("stroke","#fff");e.setAttribute("stroke-width","1.2");mk.appendChild(e)}
+function showAns(c,t,good){const tx=X(c.lo),ty=Y(c.la);if(t){const ln=document.createElementNS(NS,"line");ln.setAttribute("x1",X(t.lo));ln.setAttribute("y1",Y(t.la));ln.setAttribute("x2",tx);ln.setAttribute("y2",ty);ln.setAttribute("stroke",good?"var(--ok)":"var(--bad)");ln.setAttribute("stroke-dasharray","3 3");mk.appendChild(ln);dotM(X(t.lo),Y(t.la),"var(--acc)",4)}
+ dotM(tx,ty,"var(--ok)",5);const l=document.createElementNS(NS,"text");l.setAttribute("x",tx+7);l.setAttribute("y",ty-6);l.setAttribute("class","lbl");l.textContent=c.n;mk.appendChild(l)}
+function pEnd(){$("next").disabled=false;$("next").textContent=qi+1>=queue.length?"Résultats":"Suivante";$("skip").disabled=true;upd()}
+function pTap(t){if(pdone||qi>=queue.length)return;const c=queue[qi],good=t===c;pdone=true;if(good)pok++;else requeue(c);pres.push({c,good});showAns(c,t,good);
+ fbP(good?"✓ Bonne réponse":"✗ Tu as choisi "+t.n+" — la bonne est à "+Math.round(km(t.la,t.lo,c.la,c.lo))+" km",good?"ok":"ko");pEnd()}
+$("skip").onclick=()=>{if(pdone||qi>=queue.length)return;const c=queue[qi];pdone=true;requeue(c);pres.push({c,good:false});showAns(c,null);fbP("Passée — voilà où elle se trouve","ko");pEnd()};
+$("next").onclick=()=>{qi++;pShow()};
+function pFinish(){$("city").textContent="Terminé !";$("next").disabled=true;$("skip").disabled=true;const F={};pres.forEach(r=>{if(!r.good)F[r.c.n]=(F[r.c.n]||0)+1});const bad=Object.keys(F).sort((a,b)=>F[b]-F[a]),first=ptotal-bad.length;
+ $("end").innerHTML='<div class="res"><b>Réussies du premier coup : '+first+" / "+ptotal+" ("+Math.round(100*first/ptotal)+" %)</b><ul>"+(bad.map(n=>"<li><span>"+n+'</span><span class="ko">'+F[n]+" erreur"+(F[n]>1?"s":"")+"</span></li>").join("")||"<li><span>Aucune erreur 🎉</span></li>")+"</ul>"+(bad.length?'<button id="errs">Revoir mes erreurs</button>':"")+"</div>";
+ if(bad.length)$("errs").onclick=()=>pStart(bad.map(n=>POOL.find(c=>c.n==n)));upd()}
+/* ---- Jeu 2 : je nomme le point ---- */
+function setSel(c){const o=sel;sel=c;if(o)paint(o);if(c)paint(c);["inp","okb","hint","rev"].forEach(id=>$(id).disabled=!c);$("selT").textContent=c?"Point sélectionné — quel est son nom ?":"Touchez un point rouge";$("inp").value="";$("sug").innerHTML="";if(c)$("inp").focus()}
+function judge(r,c){
+ if(r){ST[c.n]="found";nf++;label(c);setSel(null);fbN(r.exact?"✓ Correct !":"✓ Correct — orthographe : "+c.n,"ok")}
+ else{ne++;ERR[c.n]=(ERR[c.n]||0)+1;fbN("✗ Ce n’est pas ça, réessaie","ko");$("inp").select()}
+ upd();chk()}
+function go(){if(!sel||!$("inp").value.trim())return;judge(check($("inp").value,sel),sel)}
+function renderSug(){const box=$("sug");box.innerHTML="";if(!sel)return;for(const n of sugg($("inp").value)){const b=document.createElement("button");b.textContent=n;b.onclick=()=>{if(sel)judge(n===sel.n?{exact:true}:null,sel)};box.appendChild(b)}}
+$("inp").addEventListener("input",renderSug);
+$("okb").onclick=go;$("inp").addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+$("rev").onclick=()=>{if(!sel)return;const c=sel;ST[c.n]="rev";nr++;ne++;ERR[c.n]=(ERR[c.n]||0)+1;label(c);setSel(null);fbN("Réponse : "+c.n,"ko");upd();chk()};
+$("hint").onclick=()=>{if(sel)fbN("Indice : commence par « "+sel.n[0]+" », "+sel.n.length+" caractères")};
+function chk(){if(nf+nr<total)return;const bad=Object.keys(ERR).sort((a,b)=>ERR[b]-ERR[a]);$("selT").textContent="Terminé !";$("end").innerHTML='<div class="res"><b>Trouvées : '+nf+" / "+total+" · Révélées : "+nr+" · Erreurs : "+ne+"</b><ul>"+(bad.map(n=>"<li><span>"+n+'</span><span class="ko">'+ERR[n]+" erreur"+(ERR[n]>1?"s":"")+"</span></li>").join("")||"<li><span>Aucune erreur 🎉</span></li>")+"</ul></div>"}
+/* ---- Commun ---- */
+svg.addEventListener("click",ev=>{const pt=svg.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;const p=pt.matrixTransform(svg.getScreenCTM().inverse());let t=null,b=11;for(const q of POOL){const d=Math.hypot(X(q.lo)-p.x,Y(q.la)-p.y);if(d<b){b=d;t=q}}
+ if(!t)return;if(MODE=="placer")return pTap(t);
+ if(ST[t.n]){setSel(null);fbN((ST[t.n]=="found"?"✓ ":"Réponse : ")+t.n,ST[t.n]=="found"?"ok":"ko");return}
+ fbN("");setSel(t)});
+function reset(){const v=$("reg").value;POOL=v=="all"?CITIES:CITIES.filter(c=>c.r==v);total=POOL.length;MODE=$("mode").value;
+ for(const k in ST)delete ST[k];for(const k in ERR)delete ERR[k];nf=nr=ne=0;sel=null;lb.innerHTML="";mk.innerHTML="";$("end").innerHTML="";fbN("");
+ $("pP").hidden=MODE!="placer";$("pN").hidden=MODE!="nommer";["inp","okb","hint","rev"].forEach(id=>$(id).disabled=true);$("selT").textContent="Touchez un point rouge";$("inp").value="";$("sug").innerHTML="";
+ CITIES.forEach(paint);if(MODE=="placer")pStart(POOL);else upd()}
+$("mode").onchange=reset;$("reg").onchange=reset;$("restart").onclick=reset;
+$("kN").onchange=e=>{lb.style.display=e.target.checked?"":"none";mk.style.display=e.target.checked?"":"none"};
+let z=1;$("zm").onclick=()=>{z=z%3+1;svg.style.width=z*100+"%";$("zm").textContent="🔍 Zoom ×"+z};
+function seg(id,cls){const o=$(id),box=document.createElement("div");box.className=cls;function sync(){[...box.children].forEach(b=>b.classList.toggle("on",b.dataset.v==o.value))}
+ [...o.options].forEach(op=>{const b=document.createElement("button");b.textContent=op.textContent;b.dataset.v=op.value;b.onclick=()=>{o.value=op.value;o.onchange();sync()};box.appendChild(b)});o.after(box);o.hidden=true;sync()}
+seg("mode","seg");seg("reg","chips");
+reset();
+</script>
+</body>
+</html>
